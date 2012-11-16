@@ -135,109 +135,9 @@ else if(isset($_GET['project']))
         }
         else
         {
-    		if(isset($_POST['comment']))
-    		{
-        		if(!$_SESSION['loggedin'])
-        		{
-            			echo
-            				'
-            <div class="row">
-              <div style="text-align:center;">
-                <div class="alert alert-error">
-                  <a class="close" data-dismiss="alert">&times;</a>
-                  <strong>Error: </strong>You must be logged in to comment.
-                </div>
-              </div>
-            </div>
-            ';
-        }
-        else
-        {
-            $user = $_SESSION['username'];
-            $comment = $_POST['comment'];
-            $commentNum = $_POST['commentNum'];
-            if($comment != null && $comment != "")
+            if(isset($_POST['comment']))
             {
-	        $user = $_SESSION['username'];
-                $comment = strip_tags($comment);
-                $user = $_SESSION['username'];
-                $commentNum = $_POST['comment#'];
-                $creator = "";
-                if ($stmt = $conn->prepare("INSERT INTO situla.comments (project, user, comment, created) VALUES (?, ?, ?, NOW())"))
-                {
-                    $stmt->bind_param("iss", $project, $user, $comment);
-                    $stmt->execute();
-                    $stmt->free_result();
-                }
-                if($stmt = $conn->prepare("UPDATE situla.projects SET replies = 1 + (SELECT p.replies FROM (SELECT * FROM situla.projects) AS p WHERE id=?) WHERE id=?"))
-                {
-                    $stmt->bind_param("ii", $project, $project);
-                    $stmt->execute();
-                    $stmt->free_result();
-                }
-                if($stmt = $conn->prepare("UPDATE situla.projects SET updated=NOW() WHERE id=?"))
-                {
-                    $stmt->bind_param("i", $project);
-                    $stmt->execute();
-                }
-                if($stmt = $conn->prepare("SELECT user, project FROM situla.projects WHERE id=?"))
-                {
-                    $stmt->bind_param("i", $project);
-                    $stmt->execute();
-                    $stmt->store_result();
-                    $stmt->bind_result($creator, $prj);
-                    $stmt->fetch();
-		    $stmt->free_result();
-		}
-                if($creator != $user)
-                {
-                    if ($stmt = $conn->prepare("INSERT INTO situla.alerts (user, text) VALUES (?, ?)"))
-                    {
-                        $text = $user.' replied to your project: <a href="http://situla.net/projects/?project='.$project.'#c'.$commentNum.'">'.$prj.'</a>';
-                        $stmt->bind_param("ss", $creator, $text);
-                        $stmt->execute();
-		        $stmt->free_result();
-                        if($stmt = $conn->prepare("UPDATE situla.usernames SET alerts = 1 + (SELECT p.alerts FROM (SELECT * FROM situla.usernames) AS p WHERE username=?) WHERE username=?"))
-                        {
-                            $stmt->bind_param("ss", $creator, $creator);
-                            $stmt->execute();
-                            $stmt->free_result();
-                        }
-                    }
-                }
-                $stmt->close();
-                header("Location: http://situla.net/projects/?project=".$project."#c".$commentNum);
-            }
-        }
-    }
-    if(isset($_POST['agree']) || isset($_POST['disagree']))
-    {
-        $user = $_SESSION['username'];
-        if(!$_SESSION['loggedin'])
-        {
-            echo
-            '
-            <div class="row">
-              <div style="text-align:center;">
-                <div class="alert alert-error">
-                  <a class="close" data-dismiss="alert">&times;</a>
-                  <strong>Error: </strong>You must be logged in to vote.
-                </div>
-              </div>
-            </div>
-            ';
-        }
-        else
-        {
-            if($stmt = $conn->prepare("SELECT id FROM situla.comments WHERE project=? AND user=?"))
-            {
-                $stmt->bind_param("is", $project, $user);
-                $stmt->execute();
-                $stmt->store_result();
-                $stmt->bind_result($vote);
-                $stmt->fetch();
-                $empty = $stmt->num_rows == 0;
-                if($empty)
+                if(!$_SESSION['loggedin'])
                 {
                     echo
                     '
@@ -245,101 +145,201 @@ else if(isset($_GET['project']))
                       <div style="text-align:center;">
                         <div class="alert alert-error">
                           <a class="close" data-dismiss="alert">&times;</a>
-                          <strong>Error: </strong>Please comment with feedback at least once before rating.
+                          <strong>Error: </strong>You must be logged in to comment.
                         </div>
                       </div>
-                     </div>
+                    </div>
                     ';
                 }
                 else
-		{
-                    $choice = isset($_POST['agree']) ? 1 : -1;
+                {
                     $user = $_SESSION['username'];
-                    if($stmt = $conn->prepare("SELECT vote FROM situla.votes WHERE project=? AND user=?"))
+                    $comment = $_POST['comment'];
+                    $commentNum = $_POST['commentNum'];
+                    if($comment != null && $comment != "")
+                    {
+                        $user = $_SESSION['username'];
+                        $comment = strip_tags($comment);
+                        $user = $_SESSION['username'];
+                        $commentNum = $_POST['comment#'];
+                        $creator = "";
+                        if ($stmt = $conn->prepare("INSERT INTO situla.comments (project, user, comment, created) VALUES (?, ?, ?, NOW())"))
+                        {
+                            $stmt->bind_param("iss", $project, $user, $comment);
+                            $stmt->execute();
+                            $stmt->free_result();
+                        }
+                        if($stmt = $conn->prepare("UPDATE situla.projects SET replies = 1 + (SELECT p.replies FROM (SELECT * FROM situla.projects) AS p WHERE id=?) WHERE id=?"))
+                        {
+                            $stmt->bind_param("ii", $project, $project);
+                            $stmt->execute();
+                            $stmt->free_result();
+                        }
+                        if($stmt = $conn->prepare("UPDATE situla.projects SET updated=NOW() WHERE id=?"))
+                        {
+                            $stmt->bind_param("i", $project);
+                            $stmt->execute();
+                        }
+                        if($stmt = $conn->prepare("SELECT user, project FROM situla.projects WHERE id=?"))
+                        {
+                            $stmt->bind_param("i", $project);
+                            $stmt->execute();
+                            $stmt->store_result();
+                            $stmt->bind_result($creator, $prj);
+                            $stmt->fetch();
+                            $stmt->free_result();
+                        }
+                        if($creator != $user)
+                        {
+                            if ($stmt = $conn->prepare("INSERT INTO situla.alerts (user, text) VALUES (?, ?)"))
+                            {
+                                $text = $user.' replied to your project: <a href="http://situla.net/projects/?project='.$project.'#c'.$commentNum.'">'.$prj.'</a>';
+                                $stmt->bind_param("ss", $creator, $text);
+                                $stmt->execute();
+                                $stmt->free_result();
+                                if($stmt = $conn->prepare("UPDATE situla.usernames SET alerts = 1 + (SELECT p.alerts FROM (SELECT * FROM situla.usernames) AS p WHERE username=?) WHERE username=?"))
+                                {
+                                    $stmt->bind_param("ss", $creator, $creator);
+                                    $stmt->execute();
+                                    $stmt->free_result();
+                                }
+                            }
+                        }
+                        $stmt->close();
+                        header("Location: http://situla.net/projects/?project=".$project."#c".$commentNum);
+                    }
+                }
+            }
+            if(isset($_POST['agree']) || isset($_POST['disagree']))
+            {
+                $user = $_SESSION['username'];
+                if(!$_SESSION['loggedin'])
+                {
+                    echo
+                    '
+                    <div class="row">
+                      <div style="text-align:center;">
+                        <div class="alert alert-error">
+                          <a class="close" data-dismiss="alert">&times;</a>
+                          <strong>Error: </strong>You must be logged in to vote.
+                        </div>
+                      </div>
+                    </div>
+                    ';
+                }
+                else
+                {
+                    if($stmt = $conn->prepare("SELECT id FROM situla.comments WHERE project=? AND user=?"))
                     {
                         $stmt->bind_param("is", $project, $user);
                         $stmt->execute();
                         $stmt->store_result();
                         $stmt->bind_result($vote);
                         $stmt->fetch();
-                        $insert = $stmt->num_rows == 0;
-                        if(!$insert)
+                        $empty = $stmt->num_rows == 0;
+                        if($empty)
                         {
-                            if($choice != $vote)
-                            {
-                                $stmt->free_result();
-                                if ($stmt = $conn->prepare("UPDATE situla.votes SET vote=? WHERE user=? AND project=?"))
-                                {
-                                    $stmt->bind_param("iss", $choice, $user, $project);
-                                    $stmt->execute();
-                                }
-                                $stmt->free_result();
-                                if($stmt = $conn->prepare("SELECT vote FROM situla.votes WHERE project=?"))
-                                {
-                                    $stmt->bind_param("s", $project);
-                                    $stmt->execute();
-                                    $stmt->bind_result($vote);
-                                    while($stmt->fetch())
-                                    {
-                                        $rating+=$vote;
-                                    }
-                                    $stmt->free_result();
-                                    if($stmt = $conn->prepare("UPDATE situla.projects SET rating = ? WHERE id=?"))
-                                    {
-                                        $stmt->bind_param("ii", $rating, $project);
-                                        $stmt->execute();
-                                        $stmt->close();
-                                    }
-                                    $vote = null;
-                                }
-                                header("Location: http://situla.net/projects/?project=".$project."&changevote");
-                            }
-                            else
-                            {
-                                $c = $choice == 1 ? 'agreed' : 'disagreed';
-                                echo
-                                '
-                                <div class="row">
-                                  <div style="text-align:center;">
-                                    <div class="alert alert-error">
-                                      <a class="close" data-dismiss="alert">&times;</a>
-                                      <strong>Error: </strong>You\'ve already '.$c.' with this project.
-                                    </div>
-                                  </div>
-                                 </div>
-                                ';
-                            }
+                            echo
+                            '
+                            <div class="row">
+                              <div style="text-align:center;">
+                                <div class="alert alert-error">
+                                  <a class="close" data-dismiss="alert">&times;</a>
+                                  <strong>Error: </strong>Please comment with feedback at least once before rating.
+                                </div>
+                              </div>
+                             </div>
+                            ';
                         }
-                        else if($stmt = $conn->prepare("INSERT INTO situla.votes (user, project, vote) VALUES (?, ?, ?)"))
+                        else
                         {
-                            $stmt->bind_param("ssi", $user, $project, $choice);
-                            $stmt->execute();
-                            $stmt->free_result();
-                            if($stmt = $conn->prepare("SELECT vote FROM situla.votes WHERE project=?"))
+                            $choice = isset($_POST['agree']) ? 1 : -1;
+                            $user = $_SESSION['username'];
+                            if($stmt = $conn->prepare("SELECT vote FROM situla.votes WHERE project=? AND user=?"))
                             {
-                                $stmt->bind_param("s", $project);
+                                $stmt->bind_param("is", $project, $user);
                                 $stmt->execute();
+                                $stmt->store_result();
                                 $stmt->bind_result($vote);
-                                while($stmt->fetch())
+                                $stmt->fetch();
+                                $insert = $stmt->num_rows == 0;
+                                if(!$insert)
                                 {
-                                    $rating+=$vote;
+                                    if($choice != $vote)
+                                    {
+                                        $stmt->free_result();
+                                        if ($stmt = $conn->prepare("UPDATE situla.votes SET vote=? WHERE user=? AND project=?"))
+                                        {
+                                            $stmt->bind_param("iss", $choice, $user, $project);
+                                            $stmt->execute();
+                                        }
+                                        $stmt->free_result();
+                                        if($stmt = $conn->prepare("SELECT vote FROM situla.votes WHERE project=?"))
+                                        {
+                                            $stmt->bind_param("s", $project);
+                                            $stmt->execute();
+                                            $stmt->bind_result($vote);
+                                            while($stmt->fetch())
+                                            {
+                                                $rate+=$vote;
+                                            }
+                                            $stmt->free_result();
+                                            if($stmt = $conn->prepare("UPDATE situla.projects SET rating = ? WHERE id=?"))
+                                            {
+                                                $stmt->bind_param("ii", $rate, $project);
+                                                $stmt->execute();
+                                                $stmt->close();
+                                            }
+                                            $vote = null;
+                                        }
+                                        header("Location: http://situla.net/projects/?project=".$project."&changevote");
+                                    }
+                                    else
+                                    {
+                                        $c = $choice == 1 ? 'agreed' : 'disagreed';
+                                        echo
+                                        '
+                                        <div class="row">
+                                          <div style="text-align:center;">
+                                            <div class="alert alert-error">
+                                              <a class="close" data-dismiss="alert">&times;</a>
+                                              <strong>Error: </strong>You\'ve already '.$c.' with this project.
+                                            </div>
+                                          </div>
+                                         </div>
+                                        ';
+                                    }
                                 }
-                                $stmt->free_result();
-                                if($stmt = $conn->prepare("UPDATE situla.projects SET rating = ? WHERE id=?"))
+                                else if($stmt = $conn->prepare("INSERT INTO situla.votes (user, project, vote) VALUES (?, ?, ?)"))
                                 {
-                                    $stmt->bind_param("ii", $rating, $project);
+                                    $stmt->bind_param("ssi", $user, $project, $choice);
                                     $stmt->execute();
-                                    $stmt->close();
+                                    $stmt->free_result();
+                                    if($stmt = $conn->prepare("SELECT vote FROM situla.votes WHERE project=?"))
+                                    {
+                                        $stmt->bind_param("s", $project);
+                                        $stmt->execute();
+                                        $stmt->bind_result($vote);
+                                        while($stmt->fetch())
+                                        {
+                                            $rating+=$vote;
+                                        }
+                                        $stmt->free_result();
+                                        if($stmt = $conn->prepare("UPDATE situla.projects SET rating = ? WHERE id=?"))
+                                        {
+                                            $stmt->bind_param("ii", $rating, $project);
+                                            $stmt->execute();
+                                            $stmt->close();
+                                        }
+                                        $vote = null;
+                                    }
+                                    header("Location: http://situla.net/projects/?project=".$project."&vote");
                                 }
-                                $vote = null;
                             }
-                            header("Location: http://situla.net/projects/?project=".$project."&vote");
                         }
                     }
                 }
             }
-        }
-    }
             if(isset($_POST['edit=main']))
             {
                 if($_SESSION['username'] == $user)
@@ -369,7 +369,6 @@ else if(isset($_GET['project']))
                     $newUrl = null;
                 }
             }
-            $stmt->free_result();
             if($stmt = $conn->prepare("SELECT gravatar FROM situla.usernames WHERE username=?"))
             {
                 $stmt->bind_param("s", $user);
@@ -420,16 +419,15 @@ else if(isset($_GET['project']))
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
               </div>
             </div>';
-	    echo '<div class="pull-right thumbnail"><a href="#banner" data-toggle="modal"><img src="http://situla.net/image/?project='.$project.'"></a></div>';
+            echo '<div class="pull-right thumbnail"><a href="#banner" data-toggle="modal"><img src="http://situla.net/image/?project='.$project.'"></a></div>';
             echo '<center><h3><a href="'.$url.'">'.$name.'</a></h3>';
             $displayUrl = $url;
             if(strlen($url) > 50)
             {
                 $displayUrl = substr($url, 0, 50)."...";
-	    }
+            }
             echo '<small><a href="'.$url.'">'.$displayUrl.'</a></center></small>';
             echo '</div><div class="well">';
-
             echo '<div class="pull-right">Created: '.$created.'</div><br>';
             echo '<div class="pull-right"><h2>Rating: ';
             if($rating >= 1)
