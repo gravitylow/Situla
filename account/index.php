@@ -18,7 +18,7 @@
 
     if(isset($_GET['clear']))
     {
-        
+        $_SESSION['alerts'] = 0;
     }
 ?>
     <div class="container">
@@ -91,7 +91,7 @@
     {
         while($row = $result->fetch_assoc())
         {
-            echo '<tr><td>'.$row['text'].'</td><td><a class="btn btn-success btn-small" href="?clear='.$row['id'].'&p=alerts" title="Read"><i class="icon-ok-circle icon-white"></i></a></td></tr>';;
+            echo '<tr><td>'.$row['text'];
         }
     } 
     echo
@@ -99,8 +99,7 @@
              </tbody>
            </table>
     ';
-    echo '<b>Buttons NYI.</b>';
-    $_SESSION['alerts'] = 0;
+    echo '<a class="btn btn-success" href="?clear&p=alerts"><i class="icon-ok-circle icon-white"></i> Mark alerts read</a>';
 ?>
           </div>
         </div>

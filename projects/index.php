@@ -78,20 +78,6 @@ else if(isset($_GET['project']))
 {
     include('../config.php');
     $project = $_GET['project'];
-    if(isset($_GET['newcomment']))
-    {
-        echo
-        '
-        <div class="row">
-          <div style="text-align:center;">
-            <div class="alert alert-success">
-              <a class="close" data-dismiss="alert">&times;</a>
-              <strong>Success: </strong>Your comment has been created.
-            </div>
-          </div>
-        </div>
-        ';
-    }
     if(isset($_GET['vote']))
     {
         echo
@@ -191,7 +177,7 @@ else if(isset($_GET['project']))
                 {
                     if ($stmt = $conn->prepare("INSERT INTO situla.alerts (user, text) VALUES (?, ?)"))
                     {
-		          $text = $user.' replied to your project: <a href="http://situla.net/projects/?project='.$project.'&newcomment#c'.$commentNum.'">'.$prj.'</a>';
+		          $text = $user.' replied to your project: <a href="http://situla.net/projects/?project='.$project.'#c'.$commentNum.'">'.$prj.'</a>';
                         $stmt->bind_param("ss", $creator, $text);
                         $stmt->execute();
 		          $stmt->free_result();
@@ -566,7 +552,7 @@ else if(isset($_GET['project']))
                              }
                         }
                         echo '<div id="c'.$count.'">';
-                        echo '<b>'.$row['user'].'</b> on '.$date.'</b><br>';
+                        echo '<b>'.$row['user'].'</b> on '.$row['created'].'</b><br>';
                         echo $row['comment'].'<br>';
                         if($_SESSION['username'] == $row['user'])
                         {
