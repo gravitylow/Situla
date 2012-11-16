@@ -41,35 +41,35 @@ if(isset($_GET['query']))
         include('../config.php');
         if($stmt = $conn->prepare("SELECT id, project, replies, rating, user FROM situla.projects WHERE project=? OR project LIKE CONCAT('%', ?, '%')"))
         {
-                $stmt->bind_param("ss", $query, $query);
-                $stmt->execute();
-                $stmt->bind_result($id, $project, $replies, $rating, $user);
-                $found = false;
-                while($stmt->fetch())
+            $stmt->bind_param("ss", $query, $query);
+            $stmt->execute();
+            $stmt->bind_result($id, $project, $replies, $rating, $user);
+            $found = false;
+            while($stmt->fetch())
+            {
+                $found = true;
+                echo '<b><a href="http://situla.net/projects?projects='.$id.'">'.$project.'</a></b><br>';
+                echo 'Project by: '.$user;
+                echo '<div class="pull-right"><small>Replies: '.$replies.'<br>Rating: ';
+                if($rating >= 1)
                 {
-                    $found = true;
-                    echo '<b><a href="http://situla.net/projects?projects='.$id.'">'.$project.'</a></b><br>';
-                    echo 'Report by: '.$user;
-                    echo '<div class="pull-right"><small>Replies: '.$replies.'<br>Rating: ';
-                    if($rating >= 1)
-                    {
-                            echo '<span class="text-success">+'.$rating;
-                    }
-                    else if($rating == 0)
-                    {
-                            echo '<span class="muted">'.$rating;
-                    }
-                    else
-                    {
-                            echo '<span class="text-error">'.$rating;
-                    }
-                    echo '</div></span></small>';
-                    echo '<hr>';
+                    echo '<span class="text-success">+'.$rating;
                 }
-                if(!$found)
+                else if($rating == 0)
                 {
-                        echo '<b>No reports found. Sorry!</b>';
+                    echo '<span class="muted">'.$rating;
                 }
+                else
+                {
+                    echo '<span class="text-error">'.$rating;
+                }
+                echo '</div></span></small>';
+                echo '<hr>';
+            }
+            if(!$found)
+            {
+                echo '<b>No projects found. Sorry!</b>';
+            }
         }
         echo $conn->error;
         echo '</div>';
@@ -120,12 +120,27 @@ else if(isset($_GET['project']))
         </div>
         ';
     }
-    if(isset($_POST['comment']))
+    if($stmt = $conn->prepare("SELECT id, project, url, description, user, DATE_FORMAT(`created`, '%W the %D of %M at %h:%i %p'), rating, replies, updates FROM situla.projects WHERE id=?"))
     {
-        if(!$_SESSION['loggedin'])
+        echo '<br><div class="well">';
+        $stmt->bind_param("i", $project);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($id, $name, $url, $desc, $user, $created, $rating, $comments, $updates);
+        $stmt->fetch();
+        if($stmt->num_rows == 0)
         {
-            echo
-            '
+            echo '<center><h3>Sorry, we couldn\'t find a project by the id: '.$project.'</h3>';
+            echo '<h4>It could have been deleted, or you may have followed a bad link.</h4></center>';
+        }
+        else
+        {
+    		if(isset($_POST['comment']))
+    		{
+        		if(!$_SESSION['loggedin'])
+        		{
+            			echo
+            				'
             <div class="row">
               <div style="text-align:center;">
                 <div class="alert alert-error">
@@ -140,9 +155,10 @@ else if(isset($_GET['project']))
         {
             $user = $_SESSION['username'];
             $comment = $_POST['comment'];
+            $commentNum = $_POST['commentNum'];
             if($comment != null && $comment != "")
             {
-	         $user = $_SESSION['username'];
+	        $user = $_SESSION['username'];
                 $comment = strip_tags($comment);
                 $user = $_SESSION['username'];
                 $commentNum = $_POST['comment#'];
@@ -171,16 +187,16 @@ else if(isset($_GET['project']))
                     $stmt->store_result();
                     $stmt->bind_result($creator, $prj);
                     $stmt->fetch();
-		      $stmt->free_result();
-		  }
+		    $stmt->free_result();
+		}
                 if($creator != $user)
                 {
                     if ($stmt = $conn->prepare("INSERT INTO situla.alerts (user, text) VALUES (?, ?)"))
                     {
-		          $text = $user.' replied to your project: <a href="http://situla.net/projects/?project='.$project.'#c'.$commentNum.'">'.$prj.'</a>';
+                        $text = $user.' replied to your project: <a href="http://situla.net/projects/?project='.$project.'#c'.$commentNum.'">'.$prj.'</a>';
                         $stmt->bind_param("ss", $creator, $text);
                         $stmt->execute();
-		          $stmt->free_result();
+		        $stmt->free_result();
                         if($stmt = $conn->prepare("UPDATE situla.usernames SET alerts = 1 + (SELECT p.alerts FROM (SELECT * FROM situla.usernames) AS p WHERE username=?) WHERE username=?"))
                         {
                             $stmt->bind_param("ss", $creator, $creator);
@@ -190,7 +206,7 @@ else if(isset($_GET['project']))
                     }
                 }
                 $stmt->close();
-                header("Location: http://situla.net/projects/?project=".$project."&newcomment#c".$commentNum);
+                header("Location: http://situla.net/projects/?project=".$project."#c".$commentNum);
             }
         }
     }
@@ -223,20 +239,20 @@ else if(isset($_GET['project']))
                 $empty = $stmt->num_rows == 0;
                 if($empty)
                 {
-                        echo
-                        '
-                        <div class="row">
-                          <div style="text-align:center;">
-                            <div class="alert alert-error">
-                              <a class="close" data-dismiss="alert">&times;</a>
-                              <strong>Error: </strong>Please comment with feedback at least once before rating.
-                            </div>
-                          </div>
-                         </div>
-                        ';
+                    echo
+                    '
+                    <div class="row">
+                      <div style="text-align:center;">
+                        <div class="alert alert-error">
+                          <a class="close" data-dismiss="alert">&times;</a>
+                          <strong>Error: </strong>Please comment with feedback at least once before rating.
+                        </div>
+                      </div>
+                     </div>
+                    ';
                 }
                 else
-		  {
+		{
                     $choice = isset($_POST['agree']) ? 1 : -1;
                     $user = $_SESSION['username'];
                     if($stmt = $conn->prepare("SELECT vote FROM situla.votes WHERE project=? AND user=?"))
@@ -299,24 +315,24 @@ else if(isset($_GET['project']))
                             $stmt->bind_param("ssi", $user, $project, $choice);
                             $stmt->execute();
                             $stmt->free_result();
-                                if($stmt = $conn->prepare("SELECT vote FROM situla.votes WHERE project=?"))
+                            if($stmt = $conn->prepare("SELECT vote FROM situla.votes WHERE project=?"))
+                            {
+                                $stmt->bind_param("s", $project);
+                                $stmt->execute();
+                                $stmt->bind_result($vote);
+                                while($stmt->fetch())
                                 {
-                                    $stmt->bind_param("s", $project);
-                                    $stmt->execute();
-                                    $stmt->bind_result($vote);
-                                    while($stmt->fetch())
-                                    {
-                                        $rating+=$vote;
-                                    }
-                                    $stmt->free_result();
-                                    if($stmt = $conn->prepare("UPDATE situla.projects SET rating = ? WHERE id=?"))
-                                    {
-                                        $stmt->bind_param("ii", $rating, $project);
-                                        $stmt->execute();
-                                        $stmt->close();
-                                    }
-                                    $vote = null;
+                                    $rating+=$vote;
                                 }
+                                $stmt->free_result();
+                                if($stmt = $conn->prepare("UPDATE situla.projects SET rating = ? WHERE id=?"))
+                                {
+                                    $stmt->bind_param("ii", $rating, $project);
+                                    $stmt->execute();
+                                    $stmt->close();
+                                }
+                                $vote = null;
+                            }
                             header("Location: http://situla.net/projects/?project=".$project."&vote");
                         }
                     }
@@ -324,21 +340,6 @@ else if(isset($_GET['project']))
             }
         }
     }
-    if($stmt = $conn->prepare("SELECT id, project, url, description, user, DATE_FORMAT(`created`, '%W the %D of %M at %h:%i %p'), rating, replies, updates FROM situla.projects WHERE id=?"))
-    {
-        echo '<br><div class="well">';
-        $stmt->bind_param("i", $project);
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($id, $name, $url, $desc, $user, $created, $rating, $comments, $updates);
-        $stmt->fetch();
-        if($stmt->num_rows == 0)
-        {
-            echo '<center><h3>Sorry, we couldn\'t find a project by the id: '.$project.'</h3>';
-            echo '<h4>It could have been deleted, or you may have followed a bad link.</h4></center>';
-        }
-        else
-        {
             if(isset($_POST['edit=main']))
             {
                 if($_SESSION['username'] == $user)
@@ -379,47 +380,47 @@ else if(isset($_GET['project']))
                 $stmt->free_result();
             }
             $stmt->free_result();
-                echo
-                '
-                <div class="modal hide" id="banner">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3>Project banner</h3>
-                  </div>
-                  <div class="modal-body">
-                    <center>
-                      <img src="http://situla.net/image/?project='.$project.'">
-			 <br><br>
-                      The Situla banner helps users easily identify which projects are safe to use, by means of community consensus. By placing this banner on your project\'s page, it lets people know you intend on participating in the best practices possible to keep people safe.
-                      <p><br>
-                      When adding a banner to your page, please copy the code exactly, and do not modify your banner. Doing so could be seen as violation of the standards, and your project\'s rating could suffer because of it. 
-                      <br>
-                      Your banner must always link back to this page (<a href="http://situla.net/projects/?project='.$project.'">http://situla.net/projects/?project='.$project.'</a>) so that users can further inspect the project if they so choose.
-                      <p><br>
-                      To add this banner to your page, simply add one of the following snippits to your project\'s markup. We offer multiple markup languages, so choose the one that fits you best.
-                      <p><br>
-                      <h4>WikiCreole:</h4>
-                      <code>
-                        [[http://situla.net/projects/?project='.$project.'|{{http://situla.net/image/?project='.$project.'|}}]]
-                      </code><br>
-                      <h4>BB code:</h4>
-                      <code>
-                        [url="http://situla.net/projects/?project='.$project.'"][img]http://situla.net/image/?project='.$project.'[/img][/url]
-                      </code><br>
-                      <h4>Markdown:</h4>
-                      <code>
-                        [&lt;img src="http://situla.net/image/?project='.$project.'"&gt](http://situla.net/projects/?project='.$project.')
-                      </code><br>
-                      <h4>HTML:</h4>
-                      <code>
-                        &lt;a href="http://situla.net/projects/?project='.$project.'"&gt&lt;img src="http://situla.net/image/?project='.$project.'"&gt&lt;/a&gt
-                      </code>
-                  </div>
-                  <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                  </div>
-                </div>';
-	     echo '<div class="pull-right thumbnail"><a href="#banner" data-toggle="modal"><img src="http://situla.net/image/?project='.$project.'"></a></div>';
+            echo
+            '
+            <div class="modal hide" id="banner">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Project banner</h3>
+              </div>
+              <div class="modal-body">
+                <center>
+                  <img src="http://situla.net/image/?project='.$project.'">
+                     <br><br>
+                  The Situla banner helps users easily identify which projects are safe to use, by means of community consensus. By placing this banner on your project\'s page, it lets people know you intend on participating in the best practices possible to keep people safe.
+                  <p><br>
+                  When adding a banner to your page, please copy the code exactly, and do not modify your banner. Doing so could be seen as violation of the standards, and your project\'s rating could suffer because of it. 
+                  <br>
+                  Your banner must always link back to this page (<a href="http://situla.net/projects/?project='.$project.'">http://situla.net/projects/?project='.$project.'</a>) so that users can further inspect the project if they so choose.
+                  <p><br>
+                  To add this banner to your page, simply add one of the following snippits to your project\'s markup. We offer multiple markup languages, so choose the one that fits you best.
+                  <p><br>
+                  <h4>WikiCreole:</h4>
+                  <code>
+                    [[http://situla.net/projects/?project='.$project.'|{{http://situla.net/image/?project='.$project.'|}}]]
+                  </code><br>
+                  <h4>BB code:</h4>
+                  <code>
+                    [url="http://situla.net/projects/?project='.$project.'"][img]http://situla.net/image/?project='.$project.'[/img][/url]
+                  </code><br>
+                  <h4>Markdown:</h4>
+                  <code>
+                    [&lt;img src="http://situla.net/image/?project='.$project.'"&gt](http://situla.net/projects/?project='.$project.')
+                  </code><br>
+                  <h4>HTML:</h4>
+                  <code>
+                    &lt;a href="http://situla.net/projects/?project='.$project.'"&gt&lt;img src="http://situla.net/image/?project='.$project.'"&gt&lt;/a&gt
+                  </code>
+              </div>
+              <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+              </div>
+            </div>';
+	    echo '<div class="pull-right thumbnail"><a href="#banner" data-toggle="modal"><img src="http://situla.net/image/?project='.$project.'"></a></div>';
             echo '<center><h3><a href="'.$url.'">'.$name.'</a></h3>';
             $displayUrl = $url;
             if(strlen($url) > 50)
