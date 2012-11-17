@@ -108,14 +108,14 @@ function echoHeader($page, $name)
     ';
 }
 
-function echoFooter($alerts)
+function echoFooter()
 {
     echo
     '
       <hr>
 
       <footer>
-        &copy; Situla 2012
+        &copy; Situla 2012 | <a href="https://github.com/h31ix/Situla">Github</a> | <a href="http://webchat.esper.net/?channels=situla&prompt=1">IRC</a>
         <div style="text-align:center;">
           Today\'s key: <img src="http://situla.net/image/image.php">
         </div>
