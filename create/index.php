@@ -65,5 +65,5 @@ else
         </form>
      </div>
 <?php
-    echoFooter(true);
+    echoFooter();
 ?>

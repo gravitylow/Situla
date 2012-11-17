@@ -23,5 +23,5 @@ if(isset($_GET['alert']))
         </center>
       </div>
 <?php
-    echoFooter(true);
+    echoFooter();
 ?>

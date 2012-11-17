@@ -105,5 +105,5 @@
         </div>
       </div>
 <?php
-    echoFooter(false);
+    echoFooter();
 ?>

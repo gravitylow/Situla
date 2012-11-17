@@ -66,5 +66,5 @@
         </center>
       </div>
 <?php
-    echoFooter(true);
+    echoFooter();
 ?>

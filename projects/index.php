@@ -689,6 +689,6 @@ if(!isset($_GET['project']) && !isset($_GET['query']))
     }
     echo '</div>';
 }
-echoFooter(true);
+echoFooter();
 ob_flush();
 ?>

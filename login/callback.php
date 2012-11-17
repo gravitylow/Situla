@@ -191,5 +191,5 @@ function setUsername($id, $username)
 ?>
         </div>
 <?php
-    echoFooter(true);
+    echoFooter();
 ?>

@@ -31,5 +31,5 @@ echoHeader(2, "About");
         <li>Providing a multitude of configuration options to provide a tailored user-experience</li>
       </ol>
 <?php
-    echoFooter(false);
+    echoFooter();
 ?>

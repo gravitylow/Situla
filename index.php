@@ -12,5 +12,5 @@
         </center>
       </div>
 <?php
-    echoFooter(false);
+    echoFooter();
 ?>
