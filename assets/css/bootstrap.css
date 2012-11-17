@@ -20,6 +20,9 @@ nav,
 section {
   display: block;
 }
+.efit {
+position: relative; bottom: 7px; left: 15px
+}
 audio,
 canvas,
 video {
