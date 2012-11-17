@@ -48,8 +48,6 @@ if(isset($_GET['query']))
             while($stmt->fetch())
             {
                 $found = true;
-                echo '<b><a href="http://situla.net/projects?projects='.$id.'">'.$project.'</a></b><br>';
-                echo 'Project by: '.$user;
                 echo '<div class="pull-right"><small>Replies: '.$replies.'<br>Rating: ';
                 if($rating >= 1)
                 {
@@ -64,6 +62,8 @@ if(isset($_GET['query']))
                     echo '<span class="text-error">'.$rating;
                 }
                 echo '</div></span></small>';
+                echo '<b><a href="http://situla.net/projects?projects='.$id.'">'.$project.'</a></b><br>';
+                echo 'Project by: '.$user;
                 echo '<hr>';
             }
             if(!$found)
