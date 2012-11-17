@@ -519,7 +519,7 @@ else if(isset($_GET['project']))
                     </form>
                   </div>
                 </div>';
-                echo '<br><a href="#editmain" role="button" class="btn btn-mini pull-right" data-toggle="modal">Edit</a>';
+                echo '<br><a href="#editmain" role="button" class="btn btn-mini pull-right efix" data-toggle="modal">Edit</a>';
             }
             echo '</div><div class="well">';
             $stmt->free_result();
