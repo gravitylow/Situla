@@ -82,24 +82,40 @@
         '
           </div>
           <div class="tab-pane" id="t2">
-            <table class="table table-bordered table-hover">
-              <tbody>
         ';
     }
-    
+    $any = false;
     if($result = $conn->query('SELECT text, id FROM situla.alerts WHERE user=\''.$user.'\' ORDER BY id DESC LIMIT 0, 10'))
     {
+    	if ($result->num_rows > 0)
+    	{
+    		$any = true;
+    		echo
+    		'
+    		<table class="table table-bordered table-hover">
+              <tbody>
+            ';
+    	}
         while($row = $result->fetch_assoc())
         {
             echo '<tr><td>'.$row['text'];
         }
     } 
-    echo
-    '
-             </tbody>
-           </table>
-    ';
-    echo '<a class="btn btn-success" href="?clear&p=alerts"><i class="icon-ok-circle icon-white"></i> Mark alerts read</a>';
+
+	if (!$any)
+	{
+    	echo '<p>You currently have no new alerts.</p>'
+	}
+	else
+	{
+		echo '<a class="btn btn-success" href="?clear&p=alerts"><i class="icon-ok-circle icon-white"></i> Mark alerts read</a>';
+		echo
+		'
+			</tbody>
+			</table>
+		';
+    
+	}
 ?>
           </div>
         </div>
