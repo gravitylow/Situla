@@ -20,6 +20,12 @@ nav,
 section {
   display: block;
 }
+.efix {
+position: relative; bottom: 7px; left: 15px
+}
+.cnum {
+position: relative; bottom: 5px; left: 10px
+}
 audio,
 canvas,
 video {
