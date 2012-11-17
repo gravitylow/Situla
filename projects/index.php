@@ -687,7 +687,6 @@ if(!isset($_GET['project']) && !isset($_GET['query']))
             echo '<div class="project-sep"></div>';
         }
     }
-    echo '</div>';
 }
 echoFooter();
 ob_flush();
