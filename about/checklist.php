@@ -29,6 +29,11 @@ echoHeader(2, "About");
     <div class="bar" name="progress" id="progress" style=""></div>
   </div>
   <h3><div id="progress-text"></div></h3>
+  <br />
+  <a class="btn btn-inverse pull-left" href="http://situla.net/create" id = "button">
+<i class="icon-globe icon-white"></i>
+Create a project
+</a>
 <?php
     echoFooter();
 ?>
