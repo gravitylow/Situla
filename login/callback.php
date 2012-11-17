@@ -83,12 +83,12 @@ function makeUsername()
 {
     echo
     '
-    <center>
+    <div syle="text-align:center;">
       In the interest of privacy, Situla recommends that you choose a username that will be public on your posts, instead of exposing your email.
       <br>
       If you so choose, you may enter your desired username below, or you may click the \'Use email\' button, and your email will be used as your username.
       <br>
-      <b>This choice is permanent, choose wisely.</b>
+      <strong>This choice is permanent, choose wisely.</strong>
       <br><br>
       <form method="post">
         <input type="text" class="input-large" placeholder="Username" name="username">
@@ -103,7 +103,7 @@ function makeUsername()
       <small>
         Your email will be public to others on Situla.net
       </small>
-    </center>
+    </div>
     ';
 }
 

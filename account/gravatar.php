@@ -40,7 +40,7 @@
         <a href="http://situla.net/account/" class=>&larr; Back to account</a>
       </div>
       <div class="well">
-        <center>
+        <div style="text-align:center;">
 	   <h1>Gravatar</h1>
 	   <img src="<?php echo $_SESSION['gravatar']; ?>">
           <br><br>
@@ -63,7 +63,7 @@
             </div>
             <input type="submit" class="btn btn-small btn-success" name="update" value="Update gravatar email">
           </form>
-        </center>
+        </div>
       </div>
 <?php
     echoFooter();

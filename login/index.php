@@ -18,9 +18,9 @@ if(isset($_GET['alert']))
 ?>
     <div class="container">
       <div class="well">
-        <center>
+        <div style="text-align:center;">
           <a href="google" title="Log in with Google"><img src="../assets/img/google-logo.png" width="75" height="75"></a>
-        </center>
+        </div>
       </div>
 <?php
     echoFooter();

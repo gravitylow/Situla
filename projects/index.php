@@ -36,7 +36,7 @@ echoHeader(3, "Projects");
 if(isset($_GET['query']))
 {
         $query = $_GET['query'];
-        echo '<div class="well"><center><h3>Results for: \''.$query.'\'</h3></center></div>';
+        echo '<div class="well" style="text-align:center;"><h3>Results for: \''.$query.'\'</h3></div>';
         echo '<div class="well">';
         include('../config.php');
         if($stmt = $conn->prepare("SELECT id, project, replies, rating, user FROM situla.projects WHERE project=? OR project LIKE CONCAT('%', ?, '%')"))
@@ -62,13 +62,13 @@ if(isset($_GET['query']))
                     echo '<span class="text-error">'.$rating;
                 }
                 echo '</div></span></small>';
-                echo '<b><a href="http://situla.net/projects?projects='.$id.'">'.$project.'</a></b><br>';
+                echo '<strong><a href="http://situla.net/projects?projects='.$id.'">'.$project.'</a></strong><br>';
                 echo 'Project by: '.$user;
                 echo '<hr>';
             }
             if(!$found)
             {
-                echo '<b>No projects found. Sorry!</b>';
+                echo '<strong>No projects found. Sorry!</strong>';
             }
         }
         echo $conn->error;
@@ -130,8 +130,8 @@ else if(isset($_GET['project']))
         $stmt->fetch();
         if($stmt->num_rows == 0)
         {
-            echo '<center><h3>Sorry, we couldn\'t find a project by the id: '.$project.'</h3>';
-            echo '<h4>It could have been deleted, or you may have followed a bad link.</h4></center>';
+            echo '<span style="text-align:center;"><h3>Sorry, we couldn\'t find a project by the id: '.$project.'</h3>';
+            echo '<h4>It could have been deleted, or you may have followed a bad link.</h4></span>';
         }
         else
         {
@@ -386,8 +386,7 @@ else if(isset($_GET['project']))
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h3>Project banner</h3>
               </div>
-              <div class="modal-body">
-                <center>
+              <div class="modal-body" style="text-align:center;">
                   <img src="http://situla.net/image/?project='.$project.'">
                      <br><br>
                   The Situla banner helps users easily identify which projects are safe to use, by means of community consensus. By placing this banner on your project\'s page, it lets people know you intend on participating in the best practices possible to keep people safe.
@@ -420,13 +419,13 @@ else if(isset($_GET['project']))
               </div>
             </div>';
             echo '<div class="pull-right thumbnail"><a href="#banner" data-toggle="modal"><img src="http://situla.net/image/?project='.$project.'"></a></div>';
-            echo '<center><h3><a href="'.$url.'">'.$name.'</a></h3>';
+            echo '<span style="text-align:center;"><h3><a href="'.$url.'">'.$name.'</a></h3></span>';
             $displayUrl = $url;
             if(strlen($url) > 50)
             {
                 $displayUrl = substr($url, 0, 50)."...";
             }
-            echo '<small><a href="'.$url.'">'.$displayUrl.'</a></center></small>';
+            echo '<small><a href="'.$url.'">'.$displayUrl.'</a></small>';
             echo '</div><div class="well">';
             echo '<div class="pull-right">Created: '.$created.'</div><br>';
             echo '<div class="pull-right"><h2>Rating: ';
@@ -475,7 +474,7 @@ else if(isset($_GET['project']))
                         {
                             $c = '<span class="text-error">Not complaint (-1)</span>';
                         }
-                        echo '<b>'.$row['user'].':</b> '.$c.'<br>';
+                        echo '<strong>'.$row['user'].':</strong> '.$c.'<br>';
                     }
                 }
                 else
@@ -494,7 +493,7 @@ else if(isset($_GET['project']))
             </div>
             ';
             echo '<img src="'.$gravatar.'?s=100"><br>';
-            echo '<b>'.$user.'</b><br><br>';
+            echo '<strong>'.$user.'</strong><br><br>';
             echo auto_link_text(nl2br(strtr($desc, $bbcode)));
             if($_SESSION['username'] == $user)
             {
@@ -551,7 +550,7 @@ else if(isset($_GET['project']))
                              }
                         }
                         echo '<div id="c'.$count.'">';
-                        echo '<b>'.$row['user'].'</b> on '.$row['created'].'</b><br>';
+                        echo '<strong>'.$row['user'].'</strong> on '.$row['created'].'</strong><br>';
                         echo $row['comment'].'<br>';
                         if($_SESSION['username'] == $row['user'])
                         {
@@ -669,7 +668,7 @@ if(!isset($_GET['project']) && !isset($_GET['query']))
         {
             $replies = $row['replies'];
             $rating = $row['rating'];
-            echo '<b><a href="http://situla.net/projects/?project='.$row['id'].'">'.$row['project'].'</a></b><br>';
+            echo '<strong><a href="http://situla.net/projects/?project='.$row['id'].'">'.$row['project'].'</a></strong><br>';
             echo 'Project by: '.$row['user'];
             echo '<div class="pull-right"><small>Replies: '.$replies.'<br>Rating: ';
             if($rating >= 1)

@@ -22,12 +22,10 @@
     }
 ?>
     <div class="container">
-      <div class="well well-small">
-        <center>
-	   <a href="gravatar.php"><img src="<?php echo $_SESSION['gravatar']; ?>?s=100"></a>
-          <br><br>
-	   <a class="btn btn-danger" href="?p=logout"><i class="icon-off icon-white"></i> Log out</a>
-        </center>
+      <div class="well well-small" style="text-align:center;">
+        <a href="gravatar.php"><img src="<?php echo $_SESSION['gravatar']; ?>?s=100"></a>
+        <br><br>
+	<a class="btn btn-danger" href="?p=logout"><i class="icon-off icon-white"></i> Log out</a>
       </div>
       <div class="well"
       <div class="tabbable">
@@ -62,7 +60,7 @@
     {
         while($row = $result->fetch_assoc())
         {
-            echo '<a href="http://situla.net/projects/?project='.$row['id'].'"><b>'.$row['project'].'</b></a>';
+            echo '<a href="http://situla.net/projects/?project='.$row['id'].'"><strong>'.$row['project'].'</strong></a>';
             echo '<br><br>';
         }
     }

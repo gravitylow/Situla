@@ -3,16 +3,14 @@ include('../heart.php');
 echoHeader(2, "About");
 ?>
     <div class="container">
-      <div class="hero-unit">
-        <center>
-          <h2>What does compliance with Situla standards mean?</h2>
-          <h5>
-          <p>Situla is a set of opt-in standards for code. Developers freely adopt this system, and by doing so claim that their project is in compliance with the list of rules below.</p>
-          <br>
-          <p>If you see code that claims to comply with Situla rules, but doesn't, be sure to report it so that others know.</p>
-          </h5>
-          <a class="btn btn-success btn-large btn-inverse" href="checklist.php"><i class="icon-white icon-check"></i> Developer checklist</a>
-        </center>
+      <div class="hero-unit" style="text-align:center;">
+        <h2>What does compliance with Situla standards mean?</h2>
+        <h5>
+        <p>Situla is a set of opt-in standards for code. Developers freely adopt this system, and by doing so claim that their project is in compliance with the list of rules below.</p>
+        <br>
+        <p>If you see code that claims to comply with Situla rules, but doesn't, be sure to report it so that others know.</p>
+        </h5>
+        <a class="btn btn-success btn-large btn-inverse" href="checklist.php"><i class="icon-white icon-check"></i> Developer checklist</a>
       </div>
 
       <h3>By providing compliance with Situla standards, authors claim that they:</h3>

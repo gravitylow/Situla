@@ -84,7 +84,7 @@ function echoHeader($page, $name)
 		  {
 		      echo ' ('.$alerts.')';
 		  }
-                echo ' <b class="caret"></b></a></li>';
+                echo ' <b class="caret"></strong></a></li>';
             }
             else
             {
@@ -116,9 +116,9 @@ function echoFooter($alerts)
 
       <footer>
         &copy; Situla 2012
-        <center>
+        <div style="text-align:center;">
           Today\'s key: <img src="http://situla.net/image/image.php">
-        </center>
+        </div>
       </footer>
 
     </div> <!-- /container -->
