@@ -126,10 +126,8 @@ function echoFooter($alerts)
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/bootstrap.js"></script>
     <script src="../assets/js/charcount.js"></script>
-    ';
-    if($alerts) echo '<script src="../assets/js/alert.js"></script>';
-    echo
-    '
+    <script src="../assets/js/alert.js"></script>
+    <script src="../assets/js/checklist.js"></script>
   </body>
 </html>
     ';
