@@ -108,7 +108,7 @@ function echoHeader($page, $name)
     ';
 }
 
-function echoFooter($alerts)
+function echoFooter()
 {
     echo
     '
