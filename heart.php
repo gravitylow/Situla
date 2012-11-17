@@ -71,19 +71,20 @@ function echoHeader($page, $name)
             echo
             '
             </ul>
-            <ul class="nav pull-right">
+             <div class="dropdown">
+<ul class="nav pull-right open">
             ';
             session_start();
             if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true)
             {
                 $name = $_SESSION['username'];
 	         $alerts = $_SESSION['alerts'];
-                echo '<li><a href ="http://situla.net/account">'.$name;
+                echo '<li data-toggle="dropdown" class="dropdown-toggle"><a href ="#">'.$name;
 		  if($alerts != 0)
 		  {
 		      echo ' ('.$alerts.')';
 		  }
-                echo '</a></li>';
+                echo ' <b class="caret"></b></a></li>';
             }
             else
             {
@@ -91,7 +92,13 @@ function echoHeader($page, $name)
             }
             echo
             '
-            </ul>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    
+    <li><a href="http://situla.net/account"><i class="icon-th-list"></i> Projects</a></li>
+<li><a href="http://situla.net/account/?p=alerts"><i class="icon-bell"></i> Alerts</a></li>
+<li><a href="http://situla.net/account/?p=logout"><i class="icon-off"></i> Logout</a></li>
+    </ul>
+            </ul> </div>
           </div>
         </div>
       </div>
@@ -101,7 +108,7 @@ function echoHeader($page, $name)
     ';
 }
 
-function echoFooter()
+function echoFooter($alerts)
 {
     echo
     '
@@ -119,8 +126,10 @@ function echoFooter()
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/bootstrap.js"></script>
     <script src="../assets/js/charcount.js"></script>
-    <script src="../assets/js/alert.js"></script>
-    <script src="../assets/js/checklist.js"></script>
+    ';
+    if($alerts) echo '<script src="../assets/js/alert.js"></script>';
+    echo
+    '
   </body>
 </html>
     ';
@@ -128,7 +137,7 @@ function echoFooter()
 //Thanks to Eric Coleman
 function auto_link_text($text)
 {
-   $pattern  = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))(?=[^>]*(<|$))#';
+   $pattern  = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
    $callback = create_function('$matches', '
        $url       = array_shift($matches);
        $url_parts = parse_url($url);
