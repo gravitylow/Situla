@@ -24,7 +24,7 @@ echoHeader(2, "About");
 <label class="checkbox"><input type="checkbox">Plugin will not advertise its presence or developers</label>
 <label class="checkbox"><input type="checkbox">Plugin won't alter files outside of its data directory without permission</label>
 <label class="checkbox muted"><input type="checkbox">Plugin provides good range of config options for customisation</label>
-      <p></p><hr>
+      <p></p>
 <?php
     echoFooter(false);
 ?>
