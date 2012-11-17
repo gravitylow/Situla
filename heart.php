@@ -71,20 +71,20 @@ function echoHeader($page, $name)
             echo
             '
             </ul>
-             <div class="dropdown">
-<ul class="nav pull-right open">
+            <div class="dropdown">
+              <ul class="nav pull-right">
             ';
             session_start();
             if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true)
             {
                 $name = $_SESSION['username'];
-	         $alerts = $_SESSION['alerts'];
-                echo '<li data-toggle="dropdown" class="dropdown-toggle"><a href ="#">'.$name;
-		  if($alerts != 0)
-		  {
-		      echo ' ('.$alerts.')';
-		  }
-                echo ' <b class="caret"></strong></a></li>';
+	        $alerts = $_SESSION['alerts'];
+                echo '<li><a href ="http://situla.net/account">'.$name;
+		if($alerts != 0)
+		{
+                    echo ' ('.$alerts.')';
+		}
+                echo '</li><li data-toggle="dropdown" class="dropdown-toggle"><b class="caret"></b></a></li>';
             }
             else
             {
@@ -93,17 +93,17 @@ function echoHeader($page, $name)
             echo
             '
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-    
-    <li><a href="http://situla.net/account"><i class="icon-th-list"></i> Projects</a></li>
-<li><a href="http://situla.net/account/?p=alerts"><i class="icon-bell"></i> Alerts</a></li>
-<li><a href="http://situla.net/account/?p=logout"><i class="icon-off"></i> Logout</a></li>
-    </ul>
-            </ul> </div>
+                  <li><a href="http://situla.net/account"><i class="icon-th-list"></i> Projects</a></li>
+                  <li><a href="http://situla.net/account/?p=alerts"><i class="icon-bell"></i> Alerts</a></li>
+                  <li><a href="http://situla.net/account/?p=logout"><i class="icon-off"></i> Logout</a></li>
+                </ul>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
+    
     <br>
     ';
 }

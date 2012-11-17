@@ -27,97 +27,91 @@
         <br><br>
 	<a class="btn btn-danger" href="?p=logout"><i class="icon-off icon-white"></i> Log out</a>
       </div>
-      <div class="well"
+      <div class="well">
       <div class="tabbable">
         <ul class="nav nav-tabs">
 <?php
-    if($_GET['p'] == 'alerts')
+if($_GET['p'] == 'alerts')
+{
+   echo 
+    '
+      <li><a href="#t1" data-toggle="tab">Projects</a></li>
+      <li class="active"><a href="#t2" data-toggle="tab">Alerts</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane" id="t1">
+    ';
+}
+else
+{
+    echo 
+    '
+      <li class="active"><a href="#t1" data-toggle="tab">Projects</a></li>
+      <li><a href="#t2" data-toggle="tab">Alerts</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="t1">
+    ';
+}
+
+$user = $_SESSION['username'];
+include('../config.php');
+if($result = $conn->query('SELECT project, id FROM situla.projects WHERE user=\''.$user.'\''))
+{
+    while($row = $result->fetch_assoc())
     {
-       echo 
+        echo '<a href="http://situla.net/projects/?project='.$row['id'].'"><strong>'.$row['project'].'</strong></a>';
+        echo '<br><br>';
+    }
+}
+if($_GET['p'] == 'alerts')
+{
+    echo 
+    '
+      </div>
+      <div class="tab-pane active" id="t2">
+    ';
+}
+else
+{
+    echo 
+    '
+      </div>
+      <div class="tab-pane" id="t2">
+    ';
+}
+if($result = $conn->query('SELECT text, id FROM situla.alerts WHERE user=\''.$user.'\' ORDER BY id DESC LIMIT 0, 10'))
+{
+    if ($result->num_rows > 0)
+    {
+        echo
         '
-          <li><a href="#t1" data-toggle="tab">Projects</a></li>
-          <li class="active"><a href="#t2" data-toggle="tab">Alerts</a></li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane" id="t1">
+        <table class="table table-bordered table-hover">
+          <tbody>
         ';
+        while($row = $result->fetch_assoc())
+        {
+            echo '<tr><td>'.$row['text'].'</td>';
+        } 
+        echo
+        '
+          </tbody>
+        </table>
+        '; 
+        echo '<a class="btn btn-success" href="?clear&p=alerts"><i class="icon-ok-circle icon-white"></i> Mark alerts read</a>';      
     }
     else
     {
-        echo 
-        '
-          <li class="active"><a href="#t1" data-toggle="tab">Projects</a></li>
-          <li><a href="#t2" data-toggle="tab">Alerts</a></li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane active" id="t1">
-        ';
+        echo '<p>You currently have no new alerts.</p>';
     }
+}
 
-    $user = $_SESSION['username'];
-    include('../config.php');
-    if($result = $conn->query('SELECT project, id FROM situla.projects WHERE user=\''.$user.'\''))
-    {
-        while($row = $result->fetch_assoc())
-        {
-            echo '<a href="http://situla.net/projects/?project='.$row['id'].'"><strong>'.$row['project'].'</strong></a>';
-            echo '<br><br>';
-        }
-    }
-    if($_GET['p'] == 'alerts')
-    {
-        echo 
-        '
-          </div>
-          <div class="tab-pane active" id="t2">
-            <table class="table table-bordered table-hover">
-              <tbody>
-        ';
-    }
-    else
-    {
-        echo 
-        '
-          </div>
-          <div class="tab-pane" id="t2">
-        ';
-    }
-    $any = false;
-    if($result = $conn->query('SELECT text, id FROM situla.alerts WHERE user=\''.$user.'\' ORDER BY id DESC LIMIT 0, 10'))
-    {
-    	if ($result->num_rows > 0)
-    	{
-    		$any = true;
-    		echo
-    		'
-    		<table class="table table-bordered table-hover">
-              <tbody>
-            ';
-    	}
-        while($row = $result->fetch_assoc())
-        {
-            echo '<tr><td>'.$row['text'];
-        }
-    } 
-
-	if (!$any)
-	{
-    	echo '<p>You currently have no new alerts.</p>'
-	}
-	else
-	{
-		echo '<a class="btn btn-success" href="?clear&p=alerts"><i class="icon-ok-circle icon-white"></i> Mark alerts read</a>';
-		echo
-		'
-			</tbody>
-			</table>
-		';
-    
-	}
-?>
+?>        
+            </div>
           </div>
         </div>
       </div>
 <?php
     echoFooter();
 ?>
+

@@ -48,7 +48,7 @@ if(isset($_GET['query']))
             while($stmt->fetch())
             {
                 $found = true;
-                echo '<div class="replies-right"><small>Replies: '.$replies.'<br>Rating: ';
+                echo '<div class="pull-right"><small>Replies: '.$replies.'<br>Rating: ';
                 if($rating >= 1)
                 {
                     echo '<span class="text-success">+'.$rating;
@@ -668,8 +668,6 @@ if(!isset($_GET['project']) && !isset($_GET['query']))
         {
             $replies = $row['replies'];
             $rating = $row['rating'];
-            echo '<strong><a href="http://situla.net/projects/?project='.$row['id'].'">'.$row['project'].'</a></strong><br>';
-            echo 'Project by: '.$row['user'];
             echo '<div class="pull-right"><small>Replies: '.$replies.'<br>Rating: ';
             if($rating >= 1)
             {
@@ -683,7 +681,10 @@ if(!isset($_GET['project']) && !isset($_GET['query']))
             {
                 echo '<span class="text-error">'.$rating;
             }
-            echo '</div></span></small><div class="project-sep"></div>';
+            echo '</div></span></small>';
+            echo '<strong><a href="http://situla.net/projects/?project='.$row['id'].'">'.$row['project'].'</a></strong><br>';
+            echo 'Project by: '.$row['user'];
+            echo '<div class="project-sep"></div>';
         }
     }
     echo '</div>';
