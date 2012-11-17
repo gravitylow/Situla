@@ -495,6 +495,7 @@ else if(isset($_GET['project']))
             ';
             echo '<img src="'.$gravatar.'?s=100"><br>';
             echo '<b>'.$user.'</b><br><br>';
+            $desc = auto_link_text($desc);
             echo strtr(nl2br($desc), $bbcode);
             if($_SESSION['username'] == $user)
             {
