@@ -48,7 +48,7 @@ if(isset($_GET['query']))
             while($stmt->fetch())
             {
                 $found = true;
-                echo '<div class="pull-right"><small>Replies: '.$replies.'<br>Rating: ';
+                echo '<div class="replies-right"><small>Replies: '.$replies.'<br>Rating: ';
                 if($rating >= 1)
                 {
                     echo '<span class="text-success">+'.$rating;
@@ -62,7 +62,7 @@ if(isset($_GET['query']))
                     echo '<span class="text-error">'.$rating;
                 }
                 echo '</div></span></small>';
-                echo '<b><a href="http://situla.net/projects?projects='.$id.'">'.$project.'</a></b><br>';
+                echo '<strong><a href="http://situla.net/projects?projects='.$id.'">'.$project.'</a></strong><br>';
                 echo 'Project by: '.$user;
                 echo '<hr>';
             }
