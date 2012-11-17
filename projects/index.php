@@ -681,12 +681,12 @@ if(!isset($_GET['project']) && !isset($_GET['query']))
             {
                 echo '<span class="text-error">'.$rating;
             }
-            echo '</div></span></small><div class="project-sep"></div>';
+            echo '</div></span></small>';
+            echo '<strong><a href="http://situla.net/projects/?project='.$row['id'].'">'.$row['project'].'</a></strong><br>';
+            echo 'Project by: '.$row['user'];
+            echo '<div class="project-sep"></div>';
         }
     }
-    echo '</div>';
-    echo '<strong><a href="http://situla.net/projects/?project='.$row['id'].'">'.$row['project'].'</a></strong><br>';
-    echo 'Project by: '.$row['user'];
 }
 echoFooter();
 ob_flush();
