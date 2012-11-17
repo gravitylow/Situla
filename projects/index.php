@@ -48,7 +48,7 @@ if(isset($_GET['query']))
             while($stmt->fetch())
             {
                 $found = true;
-                echo '<div class="pull-right"><small>Replies: '.$replies.'<br>Rating: ';
+                echo '<div class="replies-right"><small>Replies: '.$replies.'<br>Rating: ';
                 if($rating >= 1)
                 {
                     echo '<span class="text-success">+'.$rating;
