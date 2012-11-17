@@ -108,7 +108,7 @@ function echoHeader($page, $name)
     ';
 }
 
-function echoFooter()
+function echoFooter($alerts)
 {
     echo
     '
@@ -135,7 +135,7 @@ function echoFooter()
 //Thanks to Eric Coleman
 function auto_link_text($text)
 {
-   $pattern  = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+   $pattern  = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))(?=[^>]*(<|$))#';
    $callback = create_function('$matches', '
        $url       = array_shift($matches);
        $url_parts = parse_url($url);
