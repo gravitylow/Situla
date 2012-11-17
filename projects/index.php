@@ -684,8 +684,7 @@ if(!isset($_GET['project']) && !isset($_GET['query']))
             {
                 echo '<span class="text-error">'.$rating;
             }
-            echo '</div></span></small>';
-            echo '<hr>';
+            echo '</div></span></small><div class="project-sep"></div>';
         }
     }
     echo '</div>';

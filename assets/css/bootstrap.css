@@ -5177,3 +5177,9 @@ i[class^="icon-"] {
 .affix {
   position: fixed;
 }
+.project-sep {
+  margin: 20px 0;
+  border: 0;
+  border-top: 1px solid #f5f5f5;
+  border-bottom: 1px solid #B9BCBD;
+}
