@@ -58,11 +58,20 @@ $user = $_SESSION['username'];
 include('../config.php');
 if($result = $conn->query('SELECT project, id FROM situla.projects WHERE user=\''.$user.'\''))
 {
+        echo
+        '
+        <table class="table table-bordered table-hover">
+          <tbody>
+        ';
     while($row = $result->fetch_assoc())
     {
-        echo '<a href="http://situla.net/projects/?project='.$row['id'].'"><strong>'.$row['project'].'</strong></a>';
-        echo '<br><br>';
+        echo '<tr><td><a href="http://situla.net/projects/?project='.$row['id'].'"><strong>'.$row['project'].'</strong></a></td>';
     }
+ echo
+        '
+          </tbody>
+        </table>
+        '; 
 }
 if($_GET['p'] == 'alerts')
 {
