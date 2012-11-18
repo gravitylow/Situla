@@ -17,7 +17,11 @@ else
 if(isset($_GET['id']))
 {
     $id = $_GET['id'];
-    if(isset($_POST['username']))
+    if($id != $_SESSION['create_id'])
+    {
+        header('Location: http://situla.net/login');
+    }
+    else if(isset($_POST['username']))
     {
         $username = $_POST['username'];
         if(!hasUsername($username))
@@ -59,6 +63,7 @@ if(isset($_GET['id']))
             makeUsername();
         }
     }
+    $_SESSION['create_id'] = null;
 }
 else
 {
@@ -86,7 +91,7 @@ function makeUsername()
     <div syle="text-align:center;">
       In the interest of privacy, Situla recommends that you choose a username that will be public on your posts, instead of exposing your email.
       <br>
-      If you so choose, you may enter your desired username below, or you may click the \'Use email\' button, and your email will be used as your username.
+      If you so choose, you may enter your desired username below, or you may click the \'Use email\' button, and your email ('.$_GET['id'].') will be used as your username.
       <br>
       <strong>This choice is permanent, choose wisely.</strong>
       <br><br>
@@ -97,12 +102,13 @@ function makeUsername()
       </form>
       <br>
       - OR -
+      <br>
       <form method="post">
-        <input type="submit" name="useEmail" value="Use email" class="btn btn-large"/>
-      </form>
+        <input type="submit" name="useEmail" value="Use email" class="btn btn-small"/>
       <small>
         Your email will be public to others on Situla.net
       </small>
+      </form>
     </div>
     ';
 }

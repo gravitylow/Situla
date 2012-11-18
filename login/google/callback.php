@@ -14,6 +14,7 @@ if ($openid->mode)
 		$id = $data['contact/email'];
 		session_start();
 		$_SESSION['can_create_user'] = true;
+                $_SESSION['create_id'] = $id;
 		header('Location: http://situla.net/login/callback.php?id='.$id);
     	} 
     	else 

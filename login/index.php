@@ -20,6 +20,7 @@ if(isset($_GET['alert']))
       <div class="well">
         <div style="text-align:center;">
           <a href="google" title="Log in with Google"><img src="../assets/img/google-logo.png" width="75" height="75"></a>
+          <a href="github" title="Log in with GitHub"><img src="../assets/img/github-logo.png" width="75" height="75"></a>
         </div>
       </div>
 <?php
