@@ -1,0 +1,5 @@
+*.nja
+*.pyc
+/Situla/settings.py
+/Situla/static/assets/img/
+/image/

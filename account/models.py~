@@ -1,0 +1,11 @@
+from django.db import models
+
+class User(models.Model):
+	user = models.CharField(max_length=64)
+	identification = models.CharField(max_length=256)
+	ipv4 = models.CharField(max_length=64)
+	gravatar = models.CharField(max_length=128)
+	alerts = models.IntegerField(default=0)
+
+    	def __unicode__(self):
+        	return self.user
