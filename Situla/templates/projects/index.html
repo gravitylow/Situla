@@ -8,19 +8,16 @@
     <a class="btn btn-inverse pull-left" href="/create"><i class="icon-globe icon-white"></i> Create a project</a>
     <form class="form-search">
       <div class="input-append pull-right">
-        <input type="text" class="span2 search-query" name="query">
+        <input type="text" class="span2 search-query" name="query" value="{% if search_content %}{{ search_content }}{% endif %}">
         <button type="submit" class="btn btn-inverse">Search</button>
       </div>
     </form>
     <div class="pagination pagination-centered">
-      <form method ="POST" action="" id="orderFrm">{% csrf_token %}
-        <div class="btn-group" data-toggle="buttons-radio">
-          <button type="button" data-num="1" class="order btn {% if list.ordering == 1 %}active{% endif %}">Latest</button>
-          <button type="button" data-num="2" class="order btn {% if list.ordering == 2 %}active{% endif %}">Replies</button>
-          <button type="button" data-num="3" class="order btn {% if list.ordering == 3 %}active{% endif %}">Ratings</button>
-          <input type="hidden" value="{{ list.ordering }}" name ="sortMethod" id ="sortMethod"/>
-        </div>
-      </form>
+      <ul>
+        <li class="btn {% if sort == 'latest' or sort == None %}active{% endif %}"><a href="?sort=latest">Latest</a></li>
+        <li class="btn {% if sort == 'replies' %}active{% endif %}"><a href="?sort=replies">Replies</a></li>
+        <li class="btn {% if sort == 'rating' %}active{% endif %}"><a href="?sort=rating">Rating</a></li>
+      </ul>
     </div>
 </div>
     <br>
@@ -42,11 +39,5 @@
 {% endif %}
     </div>
   </div>
-  <script type = "text/JavaScript">
-    $(".order").click(function() {
-      $('#sortMethod').val($(this).data("num"));
-      $('#orderFrm').submit()
-    });
-  </script>
 {% endblock %}
 

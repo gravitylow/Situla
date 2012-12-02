@@ -6,18 +6,28 @@ from projects.models import Project, Comment
 
 
 def index(request):
-    # Obtain project list and use POST data (if any, defaults to 1) to order it
-    if (request.POST.get("sortMethod", "1") == "1"): #Sort by creation date
-      project_list = Project.objects.order_by('-created')
-    
-    if (request.POST.get("sortMethod", "1") == "2"):
-      project_list = Project.objects.order_by('-replies') #Sort by replies
-    
-    if (request.POST.get("sortMethod", "1") == "3"):
-      project_list = Project.objects.order_by('-rating') #Sort by rating
+    # Obtain project list and use GET data (if any, defaults to 1) to order it
+    project_list = None
+    search_content = None
+    sort = None
+    if 'sort' in request.GET:
+        sort = request.GET['sort']
+        if sort == "latest":
+            project_list = Project.objects.order_by('-created')
+        elif sort == "replies":
+            project_list = Project.objects.order_by('-replies')
+        elif sort == "rating":
+            project_list = Project.objects.order_by('-rating')
+    elif 'query' in request.GET:
+        project_list = Project.objects.filter(project__contains=request.GET['query'])
+        search_content = request.GET['query']
+    else:
+        project_list = Project.objects.order_by('-created')
       
     context = RequestContext(request, {
         'project_list': project_list,
+        'search_content': search_content,
+        'sort': sort,
     })
     return render(request, 'projects/index.html', context)
 
