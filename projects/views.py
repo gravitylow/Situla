@@ -6,8 +6,16 @@ from projects.models import Project, Comment
 
 
 def index(request):
-    # Obtain project list
-    project_list = Project.objects.order_by('-created')
+    # Obtain project list and use POST data (if any, defaults to 1) to order it
+    if (request.POST.get("sortMethod", "1") == "1"): #Sort by creation date
+      project_list = Project.objects.order_by('-created')
+    
+    if (request.POST.get("sortMethod", "1") == "2"):
+      project_list = Project.objects.order_by('-replies') #Sort by replies
+    
+    if (request.POST.get("sortMethod", "1") == "3"):
+      project_list = Project.objects.order_by('-rating') #Sort by rating
+      
     context = RequestContext(request, {
         'project_list': project_list,
     })
