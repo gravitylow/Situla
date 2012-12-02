@@ -13,17 +13,16 @@
       </div>
     </form>
     <div class="pagination pagination-centered">
-      <div class="pagination pagination-centered">
-        <form method = "POST" action = "" id = "orderFrm">{% csrf_token %}
-          <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" data-num = "1" class="order btn {% if list.ordering == 1 %}active{% endif %}">Latest</button>
-            <button type="button" data-num = "2" class="order btn {% if list.ordering == 2 %}active{% endif %}">Replies</button>
-            <button type="button" data-num = "3" class="order btn {% if list.ordering == 3 %}active{% endif %}">Ratings</button>
-            <input type = "hidden" value = "{{ list.ordering }}" name = "sortMethod" id = "sortMethod"/>
-          </div>
-        </form>
-      </div>
+      <form method ="POST" action =  id ="orderFrm">{% csrf_token %}
+        <div class="btn-group" data-toggle="buttons-radio">
+          <button type="button" data-num ="1" class="order btn {% if list.ordering == 1 %}active{% endif %}">Latest</button>
+          <button type="button" data-num ="2" class="order btn {% if list.ordering == 2 %}active{% endif %}">Replies</button>
+          <button type="button" data-num ="3" class="order btn {% if list.ordering == 3 %}active{% endif %}">Ratings</button>
+          <input type ="hidden" value ="{{ list.ordering }}" name ="sortMethod" id ="sortMethod"/>
+        </div>
+      </form>
     </div>
+</div>
     <br>
     <div class="well">
 {% if project_list %}
