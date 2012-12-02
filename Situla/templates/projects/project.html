@@ -30,22 +30,22 @@
       <br>
       <h4>WikiCreole:</h4>
       <code>
-        [[{% url 'projects:project' project.id %}|&#123;&#123;http://situla.net/image/?project=15|&#125;&#125;]]
+        [[http://situla.net{% url 'projects:project' project.id %}|&#123;&#123;http://situla.net/image/{{ project.id }}/|&#125;&#125;]]
       </code>
       <br>
       <h4>BB code:</h4>
       <code>
-        [url="{% url 'projects:project' project.id %}"][img]http://situla.net/image/?project=15[/img][/url]
+        [url="http://situla.net{% url 'projects:project' project.id %}"][img]http://situla.net/image/{{ project.id }}/[/img][/url]
       </code>
       <br>
       <h4>Markdown:</h4>
       <code>
-        [&lt;img src="/image/{{ project.id }}"&gt]({{ projects.url }})
+        [&lt;img src="http://situla.net/image/{{ project.id }}/"&gt](http://situla.net{% url 'projects:project' project.id %})
       </code>
       <br>
       <h4>HTML:</h4>
       <code>
-        &lt;a href="{{ project.url }}"&gt&lt;img src="/image/{{ project.id }}"&gt&lt;/a&gt
+        &lt;a href="http://situla.net{% url 'projects:project' project.id %}"&gt&lt;img src="http://situla.net/image/{{ project.id }}/"&gt&lt;/a&gt
       </code>
     </div>
     <div class="modal-footer">

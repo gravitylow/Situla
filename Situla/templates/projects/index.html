@@ -25,9 +25,9 @@
 {% if project_list %}
     {% for project in project_list %}
         <div class="pull-right">
-            <small>Replies: {{ project.replies }}
+            <small>Replies: <strong>{{ project.replies }}</strong>
             <br>
-            Rating: {{ project.rating }}</small>
+            {{ project.formatted_rating }}</small>
         </div>
         <strong><a href="{% url 'projects:project' project.id %}">{{ project.project }}</a></strong>
         <br>
@@ -38,6 +38,5 @@
         <strong>No projects found.</strong>
 {% endif %}
     </div>
-  </div>
 {% endblock %}
 
