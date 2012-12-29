@@ -14,9 +14,9 @@
     </form>
     <div class="pagination pagination-centered">
       <ul>
-        <li class="btn {% if sort == 'latest' or sort == None %}active{% endif %}"><a href="?sort=latest">Latest</a></li>
-        <li class="btn {% if sort == 'replies' %}active{% endif %}"><a href="?sort=replies">Replies</a></li>
-        <li class="btn {% if sort == 'rating' %}active{% endif %}"><a href="?sort=rating">Rating</a></li>
+        <li class="{% if sort == 'latest' or sort == None %}active{% endif %}"><a href="?sort=latest">Latest</a></li>
+        <li class="{% if sort == 'replies' %}active{% endif %}"><a href="?sort=replies">Replies</a></li>
+        <li class="{% if sort == 'rating' %}active{% endif %}"><a href="?sort=rating">Rating</a></li>
       </ul>
     </div>
 </div>
